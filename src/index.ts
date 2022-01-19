@@ -4,14 +4,16 @@ import apiRoutes from './routes';
 const app = express();
 const port = 3000;
 
-// app.use(express.static("public"));
-
 app.use('/api', apiRoutes);
-app.get('/', (req, res) => {
+app.get('/', (req:express.Request, res:express.Response):void => {
     res.sendFile(process.env.PWD + '/public/index.html');
 });
 
-app.listen(port, 'localhost', () => {
+app.get("*", (req:express.Request, res:express.Response):void=>{
+    res.redirect("/");
+})
+
+app.listen(port, 'localhost', ():void => {
     console.log('SERVER INIT......');
 });
 

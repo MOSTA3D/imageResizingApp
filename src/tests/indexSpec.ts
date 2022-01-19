@@ -4,26 +4,26 @@ import { resize, imagesPath } from '../routes/api/images';
 import { promises as fs } from 'fs';
 
 describe('this is endpoints tests', () => {
-    beforeEach(() => {
+    beforeEach(():void => {
         console.log('\n_____________________________________\n');
     });
 
-    beforeAll(() => {
+    beforeAll(():void => {
         console.log('\n*************************************\n');
     });
 
-    afterAll(() => {
+    afterAll(():void => {
         console.log('\n*************************************\n');
     });
 
     const request = supertest(app);
 
-    it('expects status 200 from /', async () => {
+    it('expects status 200 from /', async ():Promise<void> => {
         const response = await request.get('/');
         expect(response.status).toBe(200);
     });
 
-    it('expects status with specifying width and height to /api/images', async () => {
+    it('expects status with specifying width and height to /api/images', async ():Promise<void> => {
         const response = await request.get(
             '/api/images?image=armored&width=500&height=500'
         );
@@ -32,7 +32,7 @@ describe('this is endpoints tests', () => {
 
     //edge case
 
-    it('expects status 200 event without providing width or height.', async () => {
+    it('expects status 200 event without providing width or height.', async ():Promise<void> => {
         const response = await request.get(
             '/api/images?image=armored&width=&height='
         );
@@ -40,17 +40,16 @@ describe('this is endpoints tests', () => {
     });
 });
 
-describe('these test are for the resize function.', () => {
+describe('these test are for the resize function.', ():void => {
     const image = 'armored',
         width = 500,
         height = 500,
         outputFile = `${imagesPath}/resized/${image}_${width}_${height}.jpg`,
         fullImgPth = `${imagesPath}/fullsize/${image as string}_full.jpg`;
 
-    it('expects photo to be saved in the resized directory.', async () => {
+    it('expects photo to be saved in the resized directory.', async ():Promise<void> => {
         await resize(fullImgPth, width, height, outputFile);
         const resizedList = await fs.readdir(`${imagesPath}/resized`);
-
         expect(resizedList).toContain(`${image}_${width}_${height}.jpg`);
     });
 });
