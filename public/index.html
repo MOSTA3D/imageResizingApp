@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #111;
+        }
+        h1{
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #ddd;
+        }
+        form{
+            margin: 100px auto;
+            padding: 15px;
+            width: 400px;
+            height: 250px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+        form input{
+            width: 90%;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1> Welcome to the mighty image resizing app</h1>
+    <form action="/api/images" method="GET">
+        <select name="image">
+        </select>
+        <input type="text" name="width" placeholder="Enter Width" />
+        <input type="text" name="height" placeholder="Enter Height" />
+        <input type="submit" value="Submit" />
+    </form>
+    <script>
+        let names;
+        window.addEventListener("DOMContentLoaded", ()=>{
+            // console.log("from windown");
+            const selectImage = document.getElementsByTagName("select")[0];
+            fetch("/api/images/names").then(data=>data.json()).then((names)=>{
+                console.log(names);
+                const dcFrg = document.createDocumentFragment();
+                names.pop();
+                names.forEach(name=>{
+                    const option = document.createElement("option");
+                    option.value = name;
+                    option.textContent = name;
+                    dcFrg.append(option);
+                });
+                selectImage.append(dcFrg);
+            });
+
+
+        });
+    </script>
+</body>
+</html>
